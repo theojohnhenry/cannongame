@@ -50,7 +50,6 @@ class GameGraphics:
         return scoreText
 
     def fire(self, angle, vel):
-        print('[debug] : ' + str(self.draw_projs))
         player = self.game.getCurrentPlayer()
         playerNr = self.game.getCurrentPlayerNumber()
         proj = player.fire(angle, vel)
@@ -110,7 +109,9 @@ class GameGraphics:
             if distance == 0.0:
                 player.increaseScore()
                 self.updateScore(self.game.getCurrentPlayerNumber())
-                self.game.new()
+                self.game.newRound()
+                print('[debug]; distance is 0')
+                print(f'{player} has {player.getScore()}')
 
             self.game.nextPlayer()
 

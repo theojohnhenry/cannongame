@@ -16,7 +16,7 @@ class Game:
         self.players = [player0, player1]
         self.turn = 0
 
-        self.wind = 20 * rnd.random() - 10
+        self.wind = 0#20 * rnd.random() - 10
 
 
     """ A list containing both players """
@@ -105,10 +105,10 @@ class Player:
         cannonSize = self.game.getCannonSize()
         ballSize = self.game.getBallSize()
 
-        if (ballXPos + ballSize)-(playerXPos - cannonSize) < 0:
+        if (ballXPos + ballSize)-(playerXPos - cannonSize/2) < 0:
             distance = (ballXPos + ballSize) - (playerXPos - cannonSize/2)
 
-        elif (ballXPos - ballSize)-(playerXPos + cannonSize) > 0:
+        elif (ballXPos - ballSize)-(playerXPos + cannonSize/2) > 0:
             distance = (ballXPos - ballSize) - (playerXPos + cannonSize/2)
 
         else:
