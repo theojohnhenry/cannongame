@@ -5,7 +5,6 @@ from graphics import *
 class GameGraphics:
     def __init__(self, game):
         self.game = game
-
         # open the window
         self.win = GraphWin("Cannon game" , 640, 480, autoflush=False)
         self.win.setCoords(-110, -10, 110, 155)
@@ -15,6 +14,12 @@ class GameGraphics:
         self.draw_scores  = [self.drawScore(0), self.drawScore(1)]
         self.draw_projs   = [None, None]
 
+
+    def setDrawscore(self, playerNr, graphObj):
+        self.draw_scores[playerNr] =  graphObj
+
+    def getDrawscore(self, playerNr):
+        return self.draw_scores[playerNr]
 
     def setProjectile(self, playerNr, graphObj):
         self.draw_projs[playerNr] =  graphObj
@@ -44,9 +49,11 @@ class GameGraphics:
 
         player = self.game.getPlayers()[playerNr]
         score = player.getScore()
+
         pos = Point(player.getX(), -5)
         scoreText = Text(pos, "Score: " + str(score))
         scoreText.draw(self.win)
+
         return scoreText
 
     def fire(self, angle, vel):
@@ -82,9 +89,8 @@ class GameGraphics:
         return proj
 
     def updateScore(self,playerNr):
-        self.draw_scores[playerNr].undraw()
-        self.drawScore(playerNr)
-
+        self.getDrawscore(playerNr).undraw()
+        self.setDrawscore(playerNr, self.drawScore(playerNr))
 
     def play(self):
         while True:
@@ -107,13 +113,30 @@ class GameGraphics:
             distance = other.projectileDistance(proj)
 
             if distance == 0.0:
+
                 player.increaseScore()
+                self.explode()
                 self.updateScore(self.game.getCurrentPlayerNumber())
                 self.game.newRound()
-                print('[debug]; distance is 0')
-                print(f'{player} has {player.getScore()}')
 
             self.game.nextPlayer()
+    def explode(self):
+        player = self.game.getCurrentPlayer()
+        otherPlayer = self.game.getOtherPlayer()
+
+        explodePoint = Point(otherPlayer.getX(),(self.game.getCannonSize()/2))
+        explosionRadius = self.game.getBallSize()
+        
+        while explosionRadius <= 2*(self.game.getCannonSize()/2):
+            explosion = Circle(explodePoint,explosionRadius)
+            explosion.draw(self.win).setFill(player.getColor())
+            explosionRadius = explosionRadius + 0.5
+            update(50)
+            explosion.undraw()
+
+
+
+
 
 
 class InputDialog:

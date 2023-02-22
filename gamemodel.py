@@ -45,8 +45,8 @@ class Game:
     
     """ The number (0 or 1) of the current player. This should be the position of the current player in getPlayers(). """
     def getCurrentPlayerNumber(self):
-        return self.getPlayers().index(self.getCurrentPlayer()) #TODO: this is just a dummy value
-    
+        return self.getPlayers().index(self.getCurrentPlayer())
+
     """ Switch active player """
     def nextPlayer(self):
         if self.turn == 0:
@@ -65,7 +65,7 @@ class Game:
     """ Start a new round with a random wind value (-10 to +10) """
     def newRound(self):
         
-        self.wind = 20 * rnd.random() - 10
+        self.wind = 0#20 * rnd.random() - 10
 
 """ Models a player """
 class Player:
@@ -84,11 +84,11 @@ class Player:
     """ Create and return a projectile starting at the centre of this players cannon. Replaces any previous projectile for this player. """
     def fire(self, angle, velocity):
         
-        if self.isReversed:
-            angle = 180-angle
-
         self.Aim = (angle, velocity)
 
+        if self.isReversed:
+            angle = 180-angle
+        
         proj = Projectile(angle, velocity, Game.getCurrentWind(self.game), self.xPos, self.yPos, -110, 110)  # går ksk att göra direket i return? b
         return proj
 
